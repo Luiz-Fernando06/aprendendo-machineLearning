@@ -1,0 +1,35 @@
+#Importando meu dataframe
+import pandas as pd
+df_escola = pd.read_csv('/content/alunos_aprovacao.csv')
+df_escola.head()
+
+#converte valores categoricos em numericos
+df_escola = pd.get_dummies(df_escola)
+df_escola['aprovado_nao'] = df_escola['aprovado_nao'].apply(lambda x: 1 if x == True else 0)
+df_escola['aprovado_sim'] = df_escola['aprovado_sim'].apply(lambda x: 1 if x == True else 0)
+display(df_escola.head())
+
+#importando a biblioteca de possibilidade
+from sklearn.linear_model import LogisticRegression
+
+#criando o modelo da regressão logistica (classificador)
+model = LogisticRegression()
+
+#treinando os dados de teste e treino
+from sklearn.model_selection import train_test_split
+X = df_escola.drop(['aprovado_nao', 'aprovado_sim'], axis=1)
+y = df_escola['aprovado_sim']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2,  random_state=1)
+
+#fazendo meu modelo aprender com os dados de treino
+model = model.fit(x_train, y_train)
+
+#ou pegando a possibilidae
+probabilities = model.predict_proba(X_test)
+
+# Fazendo as predições (0 = reprovado, 1 = aprovado)
+previsoes = modelo.predict(X_test)
+
+# Exibindo as predições
+for i, resultado in enumerate(previsoes):
+    print(f"Aluno {i+1}: {'Aprovado' if resultado == 0 else 'Reprovado'}")
