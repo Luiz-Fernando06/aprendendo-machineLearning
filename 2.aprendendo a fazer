@@ -36,3 +36,17 @@ frequencia = float(input('frquencia do aluno: '))
 #organizando entradas com colunas
 entradas_usuario = pd.DataFrame([[nota_prova1, nota_prova2, frequencia]], 
                                 columns=['nota_prova1', 'nota_prova2', 'frequencia'])
+
+
+#aprovado(0) ou reprovado(1)
+aprovado_reprovado_previsao = clf.predict(entradas_usuario)
+if aprovado_reprovado_previsao == 1:
+  print('Aluno aprovado')
+else:
+  print('Aluno reprovado')
+
+#fazendo a arvore dessa analise
+data_feature_names = X.columns
+data_class_names = ['0', '1']
+tree.plot_tree(clf, feature_names = data_feature_names,class_names= data_class_names, filled = True)
+plt.show()
