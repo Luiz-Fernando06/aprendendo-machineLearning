@@ -1,0 +1,27 @@
+import pandas as pd
+from sklearn import tree
+from sklearn.metrics import accuracy_score #desempenho do classificdaor
+from sklearn.model_selection import train_test_split #divide os dados em dados de teste e treinamento
+import matplotlib.pyplot as plt #serve para desenhar a nossa arvore de decisão(grafico)
+
+# leitura dos dados
+df = pd.read_csv('/content/iris (3).csv')
+
+# definição dos dados de entrada X, de saída y, de treinamento e de teste
+X = df.drop('class', axis=1) #apagando a coluna exemplo pois vai ser a que eu vou usar para classificar
+y = df['class'] #a coluna que irei usar
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.3, random_state = 1) #size serve para treinar 30%, random_state pega aleatoriamente os valores para o desempenho do sistema
+
+# aprendizado
+clf = tree.DecisionTreeClassifier() #criar o classificador da arvore de decisão
+clf.fit(X_train, y_train) #aqui faz o treinamento
+
+# mostrar desempenho
+y_prediction = clf.predict(X_test) #diz qual a saida que me classificador acha que é certa
+print("Accuracy:", accuracy_score(y_test, y_prediction)) #aqui verifica a saida real do teste e amostra o desmpenho de acerto
+
+# mostrar árvore de decisão
+data_feature_names = ['sepal length', 'sepal width', 'petal length', 'petal width'] #selecionando as colunas
+data_class_names = ['Iris-setosa','Iris-versicolor', 'Iris-virginica'] #esses são os valores para coluna de saida de dados
+tree.plot_tree(clf, feature_names = data_feature_names,class_names= data_class_names, filled = True) #aqui eu desenho a arvore
+plt.show()
