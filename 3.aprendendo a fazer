@@ -14,7 +14,7 @@ from sklearn.neighbors import KNeighborsClassifier
 neigh = KNeighborsClassifier(n_neighbors=2)
 neigh.fit(X, y)
 
-#avaliando o desempenho do modelo
+#avaliando o desempenho do modelo com os dados de treino
 neigh.score(X, y)
 
 #fazendo uma previsão
