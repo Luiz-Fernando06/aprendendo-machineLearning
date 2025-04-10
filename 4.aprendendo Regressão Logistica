@@ -24,7 +24,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2,  random
 #fazendo meu modelo aprender com os dados de treino
 modelo = modelo.fit(X_train, y_train)
 
-#ou pegando a possibilidae
+#pegando a possibilidade
 probabilities = modelo.predict_proba(X_test)
 
 # Fazendo as predições (0 = reprovado, 1 = aprovado)
@@ -33,3 +33,7 @@ previsoes = modelo.predict(X_test)
 # Exibindo as predições
 for i, resultado in enumerate(previsoes):
     print(f"Aluno {i+1}: {'Aprovado' if resultado == 0 else 'Reprovado'}")
+
+#Vendo o desempenho
+desempenho = accuracy_score(y_test, y_pred)
+print('acurracy: ', desempenho)
