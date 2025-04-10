@@ -1,0 +1,38 @@
+#importando as bibliotecas necessarias 
+import pandas as pd
+from sklearn import tree
+from sklearn.metrics import accuracy_score 
+from sklearn.model_selection import train_test_split 
+import matplotlib.pyplot as plt
+
+#fazendo analise exploratoria
+df = pd.read_csv("/content/alunos_aprovacao.csv")
+display(df.shape)
+display(df.head())
+display(df.tail())
+display(df.info())
+
+#converte valores categoricos em numericos
+df = pd.get_dummies(df)
+df['aprovado_nao'] = df['aprovado_nao'].apply(lambda x: 1 if x == True else 0)
+df['aprovado_sim'] = df['aprovado_sim'].apply(lambda x: 1 if x == True else 0)
+display(df.head())
+
+#criando a arvore de decisão para dizer se foi aprovado sim ou não
+X = df.drop(['aprovado_nao', 'aprovado_sim'], axis=1)
+y = df['aprovado_sim']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=1)
+clf = tree.DecisionTreeClassifier()
+clf.fit(X_train, y_train)
+y_pred = clf.predict(X_test)
+desempenho = accuracy_score(y_test, y_pred)
+print('acurracy: ', desempenho)
+
+#digitação dos dados escolares
+nota_prova1 = float(input('digite a nota da prova 1: '))
+nota_prova2 = float(input('digite a nota da prova 2: '))
+frequencia = float(input('frquencia do aluno: '))
+
+#organizando entradas com colunas
+entradas_usuario = pd.DataFrame([[nota_prova1, nota_prova2, frequencia]], 
+                                columns=['nota_prova1', 'nota_prova2', 'frequencia'])
