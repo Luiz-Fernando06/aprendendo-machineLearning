@@ -1,0 +1,21 @@
+# Cada entrada é [tamanho, velocidade]
+X = [
+    [1.2, 60],   # Leopardo
+    [1.5, 50],   # Zebra
+    [0.8, 30],   # Macaco
+    [3.0, 25],   # Elefante
+    [0.3, 8],    # Tartaruga 
+    ]
+
+y = ['Leopardo', 'Zebra', 'Macaco', 'Elefante', 'Tartaruga']
+
+#importando a biblioteca, criando meu parametro KNN, e fazendo o modelo aprender com os dados X e y
+from sklearn.neighbors import KNeighborsClassifier
+neigh = KNeighborsClassifier(n_neighbors=2)
+neigh.fit(X, y)
+
+#avaliando o desempenho do modelo
+neigh.score(X, y)
+
+#fazendo uma previsão
+print(neigh.predict([[1, 40]]))
