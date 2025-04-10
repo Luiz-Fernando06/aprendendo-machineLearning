@@ -35,5 +35,6 @@ for i, resultado in enumerate(previsoes):
     print(f"Aluno {i+1}: {'Aprovado' if resultado == 0 else 'Reprovado'}")
 
 #Vendo o desempenho
+from sklearn.metrics import accuracy_score, confusion_matrix
 desempenho = accuracy_score(y_test, y_pred)
 print('acurracy: ', desempenho)
