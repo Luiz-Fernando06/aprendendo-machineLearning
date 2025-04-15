@@ -1,0 +1,55 @@
+from sklearn import tree
+from sklearn.metrics import accuracy_score 
+from sklearn.model_selection import train_test_split 
+import pandas as pd
+df = pd.read_csv('car.csv')
+df = pd.get_dummies(df)
+#replace({True: 1, False: 0}) #usaria se esses booleanos fossem valores categoricos, como string
+df = df.astype(int)
+
+X = df.drop(['class _acc','class _unacc','class _good','class _vgood'], axis=1)
+y = df[['class _acc','class _unacc','class _good','class _vgood']]
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1)
+clf = tree.DecisionTreeClassifier()
+clf = clf.fit(X_train, y_train)
+y_pred = clf.predict(X_test)
+accuracy = accuracy_score(y_test, y_pred)
+print(accuracy)
+
+print("Classificação de carro (Inaceitavel, aceitavel, bom, muito bom)")
+preco_baixo = int(input('Preço baixo(1 ou 0): '))
+preco_medio = int(input('Preço médio(1 ou 0): '))
+preco_alto = int(input('Preço alto:1 ou 0: '))
+preco_muito_alto = int(input('Preço muito alto(1 ou 0): '))
+manutencao_baixa = int(input('Manutenção baixa(1 ou 0): '))
+manutencao_media = int(input('Manutenção média(1 ou 0): '))
+manutencao_alta = int(input('Manutenção alta(1 ou 0): '))
+manutencao_muito_alta = int(input('Manutenção muito alta(1 ou 0): '))
+portas_2 = int(input('2 portas(1 ou 0): '))
+porta_3 = int(input('3 portas(1 ou 0): '))
+portas_4 = int(input('4 portas(1 ou 0): '))
+portas_5_mais = int(input('5 portas ou mais(1 ou 0): '))
+pessoas_2 = int(input('2 pessoas(1 ou 0): '))
+pessoas_4 = int(input('4 pessoas(1 ou 0): '))
+pessoas_mais = int(input('mais pessoas(1 ou 0): '))
+porta_mala_pequena = int(input('Porta mala pequeno(1 ou 0): '))
+porta_mala_media = int(input('Porta mala médio(1 ou 0): '))
+porta_mala_grande = int(input('Porta mala grande(1 ou 0): '))
+seguranca_baixa = int(input('Segurança baixa(1 ou 0): '))
+seguranca_media = int(input('Segurança média(1 ou 0): '))
+seguranca_alta = int(input('Segurança alta(1 ou 0): '))
+
+entradas = pd.DataFrame([[preco_baixo, preco_medio, preco_alto, preco_muito_alto, manutencao_baixa, manutencao_media, manutencao_alta,
+                          manutencao_muito_alta, portas_2, porta_3, portas_4, portas_5_mais, pessoas_2, pessoas_4, pessoas_mais,
+                          porta_mala_pequena, porta_mala_media, porta_mala_grande, seguranca_baixa, seguranca_media, seguranca_alta]]
+                        , columns=['buying_high', 'buying_low', 'buying_med', 'buying_vhigh', 'maint_high',
+       'maint_low', 'maint_med', 'maint_vhigh', 'doors_2', 'doors_3',
+       'doors_4', 'doors_5more', 'persons_2', 'persons_4', 'persons_more',
+       'lug_boot_big', 'lug_boot_med', 'lug_boot_small', 'safety_high',
+       'safety_low', 'safety_med'])
+
+pred = clf.predict(entradas)
+classificacao = ['Inaceitavel', 'Aceitavel', 'Bom', 'Muito Bom']
+print(f'classificação do carro: {classificacao[pred[0].tolist().index(1)]}')
+
